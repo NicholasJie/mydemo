@@ -38,7 +38,7 @@
                 <div></div>
             </div>
             <div class="boxclass" style="width: 35%;height: 450px;" v-loading="loading">
-                <h1>正在开发</h1>
+                <h1>正在开发11</h1>
             </div>
         </div>
 
