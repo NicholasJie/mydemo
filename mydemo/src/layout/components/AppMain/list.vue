@@ -71,12 +71,13 @@ export default {
             loading: true,
             loadingNews: true,
             isupNews: true,
+            Today: '',
         }
     },
-    mounted() {
-        this.getxw()
-        this.getTime()
-        setInterval(this.getTime, 1000);
+    async mounted() {
+        await this.getTime()
+        await this.getxw()
+        // setInterval(this.getTime, 1000);
         //判断是否为登录状态
         if (localStorage.getItem('islogin') != '1') {
             this.$router.push('login')
@@ -104,7 +105,7 @@ export default {
             if (day < 10) {
                 day = '0' + day;
             }
-            // 给获取的新闻格式化数据
+            // 给获取的数据格式化
             let val = []
             if (lis.wb) {
                 this.loadingNews = false
@@ -112,7 +113,6 @@ export default {
                     console.log(item[0])
                     val.push(item[0])
                 })
-                console.log('foreach后的数据', val)
             }
 
             let staTime = year + '-' + month + '-' + day
@@ -122,20 +122,19 @@ export default {
         },
         // 从服务器获取新闻
         async getxw() {
+
             let val = []
             let val1 = []
             let lis = await request.Getnews()
             await lis.data.data.forEach(item => {
-                if (item.newsTime == '2023-03-09') {
-                    console.log(item)
+                console.log('this.Today', this.Today)
+                if (item.newsTime == this.Today) {
                     val1 = item.newsValue
 
                 }
             })
             await val1.forEach((item, index) => {
-                console.log(index, item)
             })
-            console.log('list', val1)
             if (val1) {
                 this.loadingNews = false
                 this.mynews = val1
@@ -144,7 +143,10 @@ export default {
         getTime() {
             let dat = new Date()
             let day = dat.getDate()
-            let Month = dat.getMonth()
+            let Month = dat.getMonth() + 1
+            if (Month < 10) {
+                Month = '0' + Month
+            }
             let FullYear = dat.getFullYear()
             let Hours = dat.getHours() + ''
             let Min = dat.getMinutes() < 10 ? '0' + dat.getMinutes() : dat.getMinutes()
@@ -162,7 +164,7 @@ export default {
             allTime.push(Seconds)
             this.alltims = res
             // console.log(allTime)
-
+            this.Today = FullYear + '-' + Month + '-' + day
             let dates = FullYear + '-' + Month + '-' + day + '-' + Hours + ':' + Min + ':' + Seconds
             this.times = dates
         }
