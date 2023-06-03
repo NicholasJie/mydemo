@@ -9,8 +9,8 @@ const artcate_handler = require('../router_handler/artcate')
 // 获取文章分类的列表数据
 router.get('/cates', artcate_handler.getArticleCates)
 router.get('/getname', artcate_handler.getName)
-router.post('/huoqunews', artcate_handler.huoqunews)
-router.get('/getnews', artcate_handler.getNewsVal)
+router.post('/huoqunews', artcate_handler.huoqunews) 
+router.get('/getnews', artcate_handler.getNewsVal) // 前端获取新闻
 
 // 向外共享路由对象
 module.exports = router
